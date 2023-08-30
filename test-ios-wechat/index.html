@@ -67,7 +67,9 @@
             facingMode: { ideal: "environment" },
           },
         };
-        return navigator.mediaDevices.getUserMedia(constraints);
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        console.log("got stream.");
+        return stream;
       };
 
       document.querySelector("#btn-open-origin-1").onclick = async () => {
