@@ -82,6 +82,7 @@
       document.querySelector("#btn-open-origin-1").onclick = async () => {
         try {
           videoEl.onloadedmetadata = async () => {
+            console.log("'onloadedmetadata' is triggered.");
             videoEl.onloadedmetadata = null;
             await videoEl.play();
             console.log("opened.");
