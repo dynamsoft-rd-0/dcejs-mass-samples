@@ -74,6 +74,7 @@
         videoEl.onloadedmetadata = async () => {
           videoEl.onloadedmetadata = null;
           await videoEl.play();
+          console.log("opened.");
         };
 
         videoEl.srcObject = await getStream();
@@ -90,6 +91,7 @@
         videoEl.srcObject = await getStream();
         videoEl.load();
         await videoEl.play();
+        console.log("opened.");
       };
     </script>
   </body>
