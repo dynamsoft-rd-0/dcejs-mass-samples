@@ -108,6 +108,7 @@
           } else {
             videoEl.srcObject = stream;
             videoEl.load();
+            console.log("video loaded.");
             await videoEl.play();
             console.log("opened.");
           }
