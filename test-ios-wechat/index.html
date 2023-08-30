@@ -44,6 +44,8 @@
     </script>
 
     <script>
+      console.log(Dynamsoft.DCE.CameraEnhancer.browserInfo);
+
       const videoEl = document.querySelector("video");
 
       document.querySelector("#btn-open-dce").onclick = async () => {
@@ -55,7 +57,7 @@
         await cameraEnhancer.setUIElement(
           document.querySelector("#div-dce-ui")
         );
-        
+
         await cameraEnhancer.open();
       };
 
