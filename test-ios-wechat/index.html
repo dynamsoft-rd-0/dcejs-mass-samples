@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test IOS WeChat</title>
+    <script src="./dce-3.3.5.js"></script>
+  </head>
+  <body>
+    <button id="btn-open-dce">open(DCE)</button>
+    <button id="btn-open-origin-1">
+      open(Origin, using 'onloadedmetadata')
+    </button>
+    <button id="btn-open-origin-2">open(Origin, using 'load')</button>
+    <div
+      id="div-dce-ui"
+      style="margin-top: 10px; width: 90vw; height: 40vh; border: 1px solid red"
+    >
+      <div
+        class="dce-video-container"
+        style="position: relative; width: 100%; height: 100%"
+      ></div>
+    </div>
+    <div
+      style="
+        margin-top: 10px;
+        width: 90vw;
+        height: 40vh;
+        border: 1px solid blue;
+      "
+    >
+      <video
+        playsinline="true"
+        muted="true"
+        style="width: 100%; height: 100%"
+      ></video>
+    </div>
+
+    <!-- Use 'eruda' to show console in mobile phone -->
+    <script src="./eruda.js"></script>
+    <script>
+      eruda.init();
+    </script>
+
+    <script>
+      const videoEl = document.querySelector("video");
+
+      document.querySelector("#btn-open-dce").onclick = async () => {
+        Dynamsoft.DCE.CameraEnhancer._onLog = console.log;
+        console.log(Dynamsoft.DCE.CameraEnhancer.getVersion());
+
+        const cameraEnhancer =
+          await Dynamsoft.DCE.CameraEnhancer.createInstance();
+        await cameraEnhancer.setUIElement(
+          document.querySelector("#div-dce-ui")
+        );
+        
+        await cameraEnhancer.open();
+      };
+
+      const getStream = async () => {
+        const constraints = {
+          video: {
+            facingMode: { ideal: "environment" },
+          },
+        };
+        return navigator.mediaDevices.getUserMedia(constraints);
+      };
+
+      document.querySelector("#btn-open-origin-1").onclick = async () => {
+        videoEl.onloadedmetadata = async () => {
+          videoEl.onloadedmetadata = null;
+          await videoEl.play();
+        };
+
+        videoEl.srcObject = await getStream();
+      };
+
+      document.querySelector("#btn-open-origin-2").onclick = async () => {
+        const constraints = {
+          video: {
+            facingMode: { ideal: "environment" },
+          },
+        };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+        videoEl.srcObject = await getStream();
+        videoEl.load();
+        await videoEl.play();
+      };
+    </script>
+  </body>
+</html>
