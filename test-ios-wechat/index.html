@@ -49,16 +49,21 @@
       const videoEl = document.querySelector("video");
 
       document.querySelector("#btn-open-dce").onclick = async () => {
-        Dynamsoft.DCE.CameraEnhancer._onLog = console.log;
-        console.log(Dynamsoft.DCE.CameraEnhancer.getVersion());
+        try {
+          Dynamsoft.DCE.CameraEnhancer._onLog = console.log;
+          console.log(Dynamsoft.DCE.CameraEnhancer.getVersion());
 
-        const cameraEnhancer =
-          await Dynamsoft.DCE.CameraEnhancer.createInstance();
-        await cameraEnhancer.setUIElement(
-          document.querySelector("#div-dce-ui")
-        );
+          const cameraEnhancer =
+            await Dynamsoft.DCE.CameraEnhancer.createInstance();
+          await cameraEnhancer.setUIElement(
+            document.querySelector("#div-dce-ui")
+          );
 
-        await cameraEnhancer.open();
+          await cameraEnhancer.open();
+        } catch (e) {
+          const messgae = e.message || e;
+          console.error(messgae);
+        }
       };
 
       const getStream = async () => {
@@ -75,27 +80,40 @@
       };
 
       document.querySelector("#btn-open-origin-1").onclick = async () => {
-        videoEl.onloadedmetadata = async () => {
-          videoEl.onloadedmetadata = null;
-          await videoEl.play();
-          console.log("opened.");
-        };
+        try {
+          videoEl.onloadedmetadata = async () => {
+            videoEl.onloadedmetadata = null;
+            await videoEl.play();
+            console.log("opened.");
+          };
 
-        videoEl.srcObject = await getStream();
+          const stream = await getStream();
+          if (!stream) {
+            console.log("Invalid stream.");
+          } else {
+            videoEl.srcObject = stream;
+          }
+        } catch (e) {
+          const messgae = e.message || e;
+          console.error(messgae);
+        }
       };
 
       document.querySelector("#btn-open-origin-2").onclick = async () => {
-        const constraints = {
-          video: {
-            facingMode: { ideal: "environment" },
-          },
-        };
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-        videoEl.srcObject = await getStream();
-        videoEl.load();
-        await videoEl.play();
-        console.log("opened.");
+        try {
+          const stream = await getStream();
+          if (!stream) {
+            console.log("Invalid stream.");
+          } else {
+            videoEl.srcObject = stream;
+            videoEl.load();
+            await videoEl.play();
+            console.log("opened.");
+          }
+        } catch (e) {
+          const messgae = e.message || e;
+          console.error(messgae);
+        }
       };
     </script>
   </body>
