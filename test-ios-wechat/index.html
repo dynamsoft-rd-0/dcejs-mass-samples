@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Test IOS WeChat</title>
-    <!-- <script src="./dce-3.3.5.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@3.3.5/dist/dce.js"></script>
+    <script src="./dce-3.3.5.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@3.3.5/dist/dce.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@9.6.21/dist/dbr.js"></script>
   </head>
   <body>
@@ -118,21 +118,18 @@
 
       document.querySelector("#btn-open-origin-1").onclick = async () => {
         try {
-          videoEl.onloadedmetadata = async () => {
-            console.log("'onloadedmetadata' is triggered.");
-            videoEl.onloadedmetadata = null;
-            await videoEl.play();
-            console.log("opened.");
-          };
-
           const stream = await getStream();
-          setTimeout(() => {
-            if (!stream) {
-              console.log("Invalid stream.");
-            } else {
-              videoEl.srcObject = stream;
-            }
-          }, 1000);
+          if (!stream) {
+            console.log("Invalid stream.");
+          } else {
+            videoEl.onloadedmetadata = async () => {
+              console.log("'onloadedmetadata' is triggered.");
+              videoEl.onloadedmetadata = null;
+              await videoEl.play();
+              console.log("opened.");
+            };
+            videoEl.srcObject = stream;
+          }
         } catch (e) {
           const messgae = e.message || e;
           console.error(messgae);
