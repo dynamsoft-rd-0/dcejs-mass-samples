@@ -73,11 +73,8 @@
           Dynamsoft.DBR.BarcodeReader._onLog = console.log;
           console.log(Dynamsoft.DBR.BarcodeReader.version);
 
-          const scanner =
-            await Dynamsoft.DBR.BarcodeScanner.createInstance();
-          await scanner.setUIElement(
-            document.querySelector("#div-dce-ui")
-          );
+          const scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
+          await scanner.setUIElement(document.querySelector("#div-dce-ui"));
 
           await scanner.openVideo();
         } catch (e) {
@@ -109,11 +106,13 @@
           };
 
           const stream = await getStream();
-          if (!stream) {
-            console.log("Invalid stream.");
-          } else {
-            videoEl.srcObject = stream;
-          }
+          setTimeout(() => {
+            if (!stream) {
+              console.log("Invalid stream.");
+            } else {
+              videoEl.srcObject = stream;
+            }
+          }, 1);
         } catch (e) {
           const messgae = e.message || e;
           console.error(messgae);
