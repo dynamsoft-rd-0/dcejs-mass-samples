@@ -11,6 +11,7 @@
   </head>
   <body>
     <button id="btn-open-dce">open(DCE)</button>
+    <button id="btn-init-dbr">init DBR</button>
     <button id="btn-open-dbr">open(DBR)</button>
     <button id="btn-open-origin-1">
       open(Origin, using 'onloadedmetadata')
@@ -69,25 +70,29 @@
         }
       };
 
-      let scanner;
       Dynamsoft.DBR.BarcodeReader._onLog = console.log;
       Dynamsoft.DBR.BarcodeReader.license =
         "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAxMDQ2NzM3LVRYbFhaV0pRY205cVgyUmljZyIsIm1haW5TZXJ2ZXJVUkwiOiJodHRwczovL21sdHMuZHluYW1zb2Z0LmNvbSIsIm9yZ2FuaXphdGlvbklEIjoiMTAxMDQ2NzM3Iiwic3RhbmRieVNlcnZlclVSTCI6Imh0dHBzOi8vc2x0cy5keW5hbXNvZnQuY29tIiwiY2hlY2tDb2RlIjozNDA1OTc4NTd9";
 
-      Dynamsoft.DBR.BarcodeReader.loadWasm();
-      // (async ()=>{
-      //   Dynamsoft.DBR.BarcodeReader._onLog = console.log;
-      //     console.log(Dynamsoft.DBR.BarcodeReader.version);
+      const initDBR = async () => {
+        console.log("initing DBR...");
+        await Dynamsoft.DBR.BarcodeReader.loadWasm();
+        console.log("DBR completes initialization.");
+      };
+      document.querySelector("#btn-init-dbr").onclick = async () => {
+        try {
+          await initDBR();
+        } catch (e) {
+          const messgae = e.message || e;
+          console.error(messgae);
+        }
+      };
 
-      //   Dynamsoft.DBR.BarcodeReader.license =
-      //     "DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAxMDQ2NzM3LVRYbFhaV0pRY205cVgyUmljZyIsIm1haW5TZXJ2ZXJVUkwiOiJodHRwczovL21sdHMuZHluYW1zb2Z0LmNvbSIsIm9yZ2FuaXphdGlvbklEIjoiMTAxMDQ2NzM3Iiwic3RhbmRieVNlcnZlclVSTCI6Imh0dHBzOi8vc2x0cy5keW5hbXNvZnQuY29tIiwiY2hlY2tDb2RlIjozNDA1OTc4NTd9";
-
-      //   scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
-      //   await scanner.setUIElement(document.querySelector("#div-dce-ui"));
-      // })();
       document.querySelector("#btn-open-dbr").onclick = async () => {
         try {
-          scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
+          await initDBR();
+
+          let scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
           await scanner.setUIElement(document.querySelector("#div-dce-ui"));
 
           await scanner.openVideo();
