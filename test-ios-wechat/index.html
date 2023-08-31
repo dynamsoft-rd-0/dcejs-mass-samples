@@ -80,7 +80,8 @@
           const scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
           await scanner.setUIElement(document.querySelector("#div-dce-ui"));
 
-          await scanner.openVideo();
+          // await scanner.openVideo();
+          await scanner.dce.open();
         } catch (e) {
           const messgae = e.message || e;
           console.error(messgae);
