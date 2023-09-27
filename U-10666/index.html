@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DCE JS sample</title>
+    <script src="https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@3.3.6/dist/dce.js"></script>
+  </head>
+  <body>
+    <button id="btn-open-camera">open camera</button>
+    <div id="div-ui-container" style="width: 90vw; height: 80vh"></div>
+
+    <!-- Use 'eruda' to show console in mobile phone -->
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      eruda.init();
+    </script>
+
+    <script>
+      Dynamsoft.DCE.CameraEnhancer._onLog = console.log;
+
+      const btnOpenCamera = document.querySelector("#btn-open-camera");
+      let cameraEnhancer;
+      let isOpening = false;
+
+      const initDCE = async () => {
+        if (cameraEnhancer) return;
+
+        cameraEnhancer = await Dynamsoft.DCE.CameraEnhancer.createInstance();
+        await cameraEnhancer.setUIElement(
+          Dynamsoft.DCE.CameraEnhancer.defaultUIElementURL
+        );
+        document
+          .querySelector("#div-ui-container")
+          .append(cameraEnhancer.getUIElement());
+      };
+
+      btnOpenCamera.onclick = async () => {
+        if (isOpening) return;
+        isOpening = true;
+
+        await initDCE();
+        await cameraEnhancer.open();
+
+        isOpening = false;
+      };
+    </script>
+  </body>
+</html>
