@@ -9,7 +9,10 @@
   </head>
   <body>
     <button id="btn-open-camera">open camera</button>
-    <div id="div-ui-container" style="margin-top: 10px;width: 90vw; height: 80vh"></div>
+    <div
+      id="div-ui-container"
+      style="margin-top: 10px; width: 90vw; height: 80vh"
+    ></div>
 
     <!-- Use 'eruda' to show console in mobile phone -->
     <script src="//cdn.jsdelivr.net/npm/eruda"></script>
@@ -42,6 +45,15 @@
 
         await initDCE();
         await cameraEnhancer.open();
+
+        console.log(
+          "cameras returned by 'navigator.mediaDevices.enumerateDevices()': "
+        );
+        (await navigator.mediaDevices.enumerateDevices()).forEach((device) => {
+          if (device.kind === "videoinput") {
+            console.log(JSON.stringify(device));
+          }
+        });
 
         isOpening = false;
       };
